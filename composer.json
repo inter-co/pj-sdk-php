@@ -1,21 +1,11 @@
 {
-    "name": "inter/sdk",
-    "description": "SDK PHP",
-    "autoload": {
-        "psr-4": {
-            "Inter\\Sdk\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Inter"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "guzzlehttp/guzzle": "^7.9",
-        "ext-openssl": "*",
-        "monolog/monolog": "^3.8",
-        "ext-decimal": "*"
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/rafaelapuka/pj-sdk-php"
     }
+  ],
+  "require": {
+    "inter/sdk": "dev-master"
+  }
 }
