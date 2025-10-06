@@ -12,6 +12,7 @@ use Inter\Sdk\sdkLibrary\commons\exceptions\SdkException;
 use Inter\Sdk\sdkLibrary\commons\models\Config;
 use Inter\Sdk\sdkLibrary\commons\structure\Constants;
 use Inter\Sdk\sdkLibrary\commons\utils\SslUtils;
+use Inter\Sdk\sdkLibrary\interfaces\TokenCacheInterface;
 use Inter\Sdk\sdkLibrary\pix\PixSdk;
 use RuntimeException;
 
@@ -35,7 +36,7 @@ class InterSdk
      *
      * @throws Exception If an error occurs during initialization.
      */
-    public function __construct(string $environment, string $clientId, string $clientSecret, string $certificate, string $certificatePassword)
+    public function __construct(string $environment, string $clientId, string $clientSecret, string $certificate, string $certificatePassword, ?TokenCacheInterface $tokenCache = null)
     {
         $this->config = new Config(
             EnvironmentEnum::fromLabel($environment),
@@ -44,7 +45,8 @@ class InterSdk
             $certificate,
             $certificatePassword,
             '',
-            ''
+            '',
+            $tokenCache
         );
         try {
             $keyAndCertificate = SslUtils::convertPfxToPem($this->config->getCertificate(), $this->config->getPassword());
@@ -71,7 +73,8 @@ class InterSdk
             $certificate,
             $certificatePassword,
             $dataPaths['certificate_path'],
-            $dataPaths['private_key_path']
+            $dataPaths['private_key_path'],
+            $tokenCache
         );
 
         // Create logs directory if it doesn't exist
@@ -83,8 +86,6 @@ class InterSdk
         if (file_exists($tomorrow)) {
             unlink($tomorrow);
         }
-
-        echo self::VERSION;
     }
 
     private function formatErrorMessage(\Exception $e): string

@@ -3,6 +3,7 @@
 namespace Inter\Sdk\sdkLibrary\commons\models;
 
 use Inter\Sdk\sdkLibrary\commons\enums\EnvironmentEnum;
+use Inter\Sdk\sdkLibrary\interfaces\TokenCacheInterface;
 
 /**
  * This class represents the necessary configurations
@@ -68,7 +69,8 @@ class Config
         string $certificate,
         string $password,
         string $crt,
-        string $key
+        string $key,
+        public ?TokenCacheInterface $tokenCache = null
     ) {
         $this->environment = $environment;
         $this->clientId = $clientId;

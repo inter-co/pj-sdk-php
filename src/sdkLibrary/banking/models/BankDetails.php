@@ -16,7 +16,7 @@ class BankDetails extends Recipient
      *
      * @var string
      */
-    private string $type = "BANK_DETAILS";
+    private string $type = "DADOS_BANCARIOS";
     /**
      * The bank account number.
      *
@@ -109,6 +109,7 @@ class BankDetails extends Recipient
             'agencia' => $this->agency,
             'nome' => $this->name,
             'instituicaoFinanceira' => $this->financialInstitution?->toArray(),
+            'tipo' => $this->type,
         ];
     }
     // Getters e Setters (opcional, se necessário)

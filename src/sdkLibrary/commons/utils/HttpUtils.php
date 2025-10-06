@@ -116,7 +116,18 @@ class HttpUtils
     public static function call(Config $config, string $method, string $url, string $scope, string $message, string $jsonData): string
     {
         try {
-            $accessToken = TokenUtils::get($config, $scope);
+            $accessToken = null;
+
+            if ($config->tokenCache !== null) {
+                $accessToken = $config->tokenCache->get($config->getClientId() . $scope);
+            }
+
+            if (!$accessToken) {
+                $accessToken = TokenUtils::get($config, $scope);
+                if ($config->tokenCache !== null && $accessToken !== null) {
+                    $config->tokenCache->set($config->getClientId() . $scope, $accessToken, TokenUtils::TOKEN_CACHE_TTL);
+                }
+            }
 
             $headers = [
                 'Authorization' => "Bearer {$accessToken}",
@@ -162,6 +173,9 @@ class HttpUtils
             return (string) $response->getBody();
 
         } catch (GuzzleException $e) {
+            if ($config->tokenCache !== null) {
+                $config->tokenCache->delete($config->getClientId() . $scope);
+            }
             throw new SdkException(
                 "Error executing request: " . $e->getMessage(),
                 new Error("Request error", $e->getMessage(), null)

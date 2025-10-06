@@ -16,6 +16,9 @@ use RuntimeException;
 class TokenUtils
 {
     private const ADDITIONAL_TIME = 60;
+
+    public const TOKEN_CACHE_TTL = 60 * 60 * 0.5; // 30 minutes in seconds
+
     private static array $tokenMap = [];
 
     /**
